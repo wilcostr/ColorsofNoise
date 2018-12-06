@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Copied from billing library -->
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="titleTextColor">@android:color/white</item>
+    </style>
+    <!-- Button styles -->
+    <style name="BaseButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">@dimen/button_width</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+    </style>
+    <style name="ButtonStyle" parent="BaseButtonStyle">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_gravity">bottom|end</item>
+    </style>
+    <!-- CardView -->
+    <style name="CardViewStyle" parent="CardView">
+        0dp
+        0dp
+        match_parent
+        @dimen/card_view_margin
+        @dimen/card_view_margin
+        @dimen/card_view_card_corner_radius
+        @dimen/card_view_card_elevation
+        false
+        <item name="android:layout_marginRight">@dimen/card_view_margin</item>
+        <item name="android:layout_marginLeft">@dimen/card_view_margin</item>
+        <item name="cardCornerRadius">@dimen/card_view_card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_view_card_elevation</item>
+        <item name="cardPreventCornerOverlap">false</item>
+    </style>
+
+</resources>

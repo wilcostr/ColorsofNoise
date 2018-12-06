@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">Colors of Noise</string>
+    <string name="ad_unit_id">ca-app-pub-5782047288878600/5798336761</string>
+
+    <string name="play_button">play button</string>
+    <string name="icon_credit">Icon made by Freepik from www.flaticon.com</string>
+    <string name="credits">Credits</string>
+    <string name="share">Share</string>
+    <string name="timer">Timer</string>
+    <string name="spectrum">Spectrum</string>
+
+    <string name="timer_title">Auto-shutdown timer</string>
+    <string name="timer_msg">All playback will be automatically stopped when the timer runs out.
+    </string>
+    <string name="timer_msg_upgrade">The playback timer is a premium feature.\n
+        \nIf you\'d like to upgrade to the premium app version, you can do so below.
+    </string>
+    <string name="start_time">00:00</string>
+    <string name="timer_div">:</string>
+
+    <string name="feedback">Feedback</string>
+    <string name="feedback_title">Give feedback</string>
+    <string name="feedback_msg">We appreciate any feedback, suggestions and feature requests.\n
+        \nPlease consider leaving a review on Google Play if you enjoy using Colors of Noise.
+    </string>
+
+    <string name="button_why_ads">Why ads?</string>
+    <string name="ads_title">Bothered by the ads?</string>
+    <string name="ads_msg">Showing ads allow us to release free apps.\n
+        \nIf ads bother you and you would like to remove them, you can do so below.
+    </string>
+
+    <string name="premium_action">Promotion</string>
+    <string name="premium_title">Unlock premium</string>
+    <string name="premium_msg">Enter your promo code here.\n
+        \nIf you don\'t have an unlock code,
+        just send us a quick email request.
+    </string>
+
+    <string name="upgrade">Upgrade</string>
+
+    <string name="welcome_premium">Welcome to the premium experience</string>
+    <string name="wrong_code">That is not a valid promo code</string>
+    <string name="upgrade_cancelled">Maybe next time. :)</string>
+    <string name="upgrade_unknown">Unknown resultCode received in onPurchasesUpdated()</string>
+
+    <string name="btn_rate_app">Rate app</string>
+    <string name="btn_contact_us">Email us</string>
+
+    <string name="txt_no_email">No email application found</string>
+
+    <string name="alert_title">Continue playback</string>
+    <string name="alert_msg">Noise playback will continue after exit.</string>
+
+    <string name="white_button">White</string>
+    <string name="pink_button">Pink</string>
+    <string name="red_button">Red</string>
+
+    <string name="white_txt">White Noise</string>
+    <string name="pink_txt">Pink Noise</string>
+    <string name="red_txt">Red Noise</string>
+
+    <string name="white_description">White noise has equal power at all frequencies. Human hearing
+        is however logarithmically spaced, where a doubling of frequency (an octave) is perceived
+        the same regardless of the frequency. This makes white noise seem quite harsh and high pitched.
+    </string>
+    <string name="pink_description">Pink noise has a logarithmically even distribution of power.
+        Since each octave contains the same amount of power it is received as a naturally smooth
+        noise by the human ear.
+    </string>
+    <string name="red_description">Red noise, also known as Brown noise (due to the particle physics
+        applications in Brownian motion), has a power density that decreases with
+        increasing frequency. It is perceived to be the most pleasant and is often used
+        while studying or as a baby sleep sound.
+    </string>
+
+    <!-- Copied from the play billing library -->
+    <string name="button_buy">Buy</string>
+    <string name="button_own">Owned</string>
+
+    <string name="alert_already_purchased">Item is already purchased</string>
+
+    <string name="error_no_skus">We didn\'t find any SKUs to display… Check your internet
+        connection and make sure your Google Developer Console was setup correctly.</string>
+    <string name="error_billing_unavailable">Billing unavailable. Make sure your Google Play app
+        is up to date</string>
+    <string name="error_billing_default">Billing unavailable. Please check your device.</string>
+
+    <string name="content_description_app_loading_image">App loading image</string>
+
+</resources>
