@@ -169,13 +169,13 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
         // Set volume bar
         seekBar = findViewById(R.id.volume_seekBar);
-        amplitude = 5000*main_log.getInt("volume",80)/seekBar.getMax();
+        amplitude = 32000*main_log.getInt("volume",80)/seekBar.getMax();
         seekBar.setProgress(main_log.getInt("volume",80));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (b){
-                    amplitude = 5000*i/seekBar.getMax();
+                    amplitude = 32000*i/seekBar.getMax();
                     SharedPreferences.Editor editor = main_log.edit();
                     editor.putInt("volume", i);
                     editor.apply();
@@ -511,14 +511,14 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
                 while(isRunning){
                     for(int i=0; i<bufferSize; i++){
                         short newWhite = (short)((-1.0 + 2.0 * random.nextFloat()) * amplitude);
-                        b[0] = (short) (0.99765*b[0] + 0.0990460*newWhite);
-                        b[1] = (short) (0.96300*b[1] + 0.2965164*newWhite);
-                        b[2] = (short) (0.57000*b[2] + 1.0526913*newWhite);
+                        b[0] = (short) (0.907*b[0] + 0.090042*newWhite);
+                        b[1] = (short) (0.7643*b[1] + 0.23533*newWhite);
+                        b[2] = (short) (0.35*b[2] + 0.646*newWhite);
                         if (redShift) {
                             samples[i] = b[0];
                         }
                         else if(pinkShift){
-                            samples[i] = (short) ((b[0] + b[1] + b[2] + 0.1848*newWhite)*0.15);
+                            samples[i] = (short) ((b[0] + b[1] + b[2] + 0.1848*newWhite)*0.3);
                         }
                         else
                             samples[i] = (short) (newWhite*0.8);
