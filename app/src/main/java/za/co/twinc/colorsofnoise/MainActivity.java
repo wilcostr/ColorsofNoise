@@ -1,6 +1,7 @@
 package za.co.twinc.colorsofnoise;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -49,11 +50,16 @@ import za.co.twinc.colorsofnoise.billing.BillingProvider;
 import za.co.twinc.colorsofnoise.skulist.AcquireFragment;
 
 import static android.support.v4.app.NotificationCompat.CATEGORY_SERVICE;
+import static java.lang.Math.abs;
+import static java.lang.Math.signum;
 import static za.co.twinc.colorsofnoise.billing.BillingManager.BILLING_MANAGER_NOT_INITIALIZED;
 
 public class MainActivity extends AppCompatActivity implements BillingProvider{
 
     public String MAIN_PREFS = "main_app_prefs";
+
+    NotificationManager mNotifyMgr;
+    public static final String PRIMARY_NOTIF_CHANNEL = "default";
 
     private BillingManager mBillingManager;
     private AcquireFragment mAcquireFragment;
@@ -108,6 +114,14 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
         // Create main share preference log
         final SharedPreferences main_log = getSharedPreferences(MAIN_PREFS, 0);
+
+        // Create notification channel. No problem if already created previously
+        mNotifyMgr = (NotificationManager)getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    PRIMARY_NOTIF_CHANNEL, PRIMARY_NOTIF_CHANNEL, NotificationManager.IMPORTANCE_LOW);
+            mNotifyMgr.createNotificationChannel(channel);
+        }
 
         // Get the timer textView. Note that the timer can be initialised even if it is not visible
         textTimer = findViewById(R.id.textTimer);
@@ -169,13 +183,13 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
         // Set volume bar
         seekBar = findViewById(R.id.volume_seekBar);
-        amplitude = 32000*main_log.getInt("volume",80)/seekBar.getMax();
+        amplitude = 16000*main_log.getInt("volume",80)/seekBar.getMax();
         seekBar.setProgress(main_log.getInt("volume",80));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (b){
-                    amplitude = 32000*i/seekBar.getMax();
+                    amplitude = 16000*i/seekBar.getMax();
                     SharedPreferences.Editor editor = main_log.edit();
                     editor.putInt("volume", i);
                     editor.apply();
@@ -416,7 +430,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
     // TODO: Consolidate methods to remove code duplication
     public void onButtonWhiteClick(@SuppressWarnings("UnusedParameters") View v){
-        image.setImageResource(R.drawable.headphones_white);
+        image.setImageResource(R.drawable.white);
         textView.setText(R.string.white_txt);
         redShift = false;
         pinkShift = false;
@@ -426,7 +440,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
     }
 
     public void onButtonPinkClick(@SuppressWarnings("UnusedParameters") View v){
-        image.setImageResource(R.drawable.headphones_pink);
+        image.setImageResource(R.drawable.pink);
         textView.setText(R.string.pink_txt);
         redShift = false;
         pinkShift = true;
@@ -435,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
         setNotification();
     }
     public void onButtonRedClick(@SuppressWarnings("UnusedParameters") View v){
-        image.setImageResource(R.drawable.headphones_red);
+        image.setImageResource(R.drawable.red);
         textView.setText(R.string.red_txt);
         redShift = true;
         pinkShift = false;
@@ -491,6 +505,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
                         AudioFormat.ENCODING_PCM_16BIT);
 
                 // Create an audiotrack object
+                // TODO: Stream seems deprecated?
                 AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                         sampleRate,
                         AudioFormat.CHANNEL_OUT_MONO,
@@ -510,18 +525,28 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
                 // Define synthesis loop
                 while(isRunning){
                     for(int i=0; i<bufferSize; i++){
-                        short newWhite = (short)((-1.0 + 2.0 * random.nextFloat()) * amplitude);
-                        b[0] = (short) (0.907*b[0] + 0.090042*newWhite);
-                        b[1] = (short) (0.7643*b[1] + 0.23533*newWhite);
-                        b[2] = (short) (0.35*b[2] + 0.646*newWhite);
+                        short newWhite = (short)(random.nextGaussian() * 0.5*amplitude);
+                        b[0] = (short) (0.99765*b[0] + 0.0990460*newWhite);
+                        b[1] = (short) (0.96300*b[1] + 0.2965164*newWhite);
+                        b[2] = (short) (0.57000*b[2] + 1.0526913*newWhite);
+
+                        if (abs(b[0]) > amplitude) {
+                            b[0] = (short) (amplitude * signum(b[0]));
+                        }
+
                         if (redShift) {
                             samples[i] = b[0];
                         }
                         else if(pinkShift){
-                            samples[i] = (short) ((b[0] + b[1] + b[2] + 0.1848*newWhite)*0.3);
+                            samples[i] = (short) ((b[0] + b[1] + b[2] + 0.1848*newWhite)*0.15);
                         }
                         else
-                            samples[i] = (short) (newWhite*0.8);
+                            samples[i] = (short) (newWhite*0.75);
+                        if (abs(samples[i]) > amplitude) {
+                            samples[i] = (short) (amplitude * signum(samples[i]));
+                            System.out.println(samples[i] + " is bigger than " + amplitude);
+                        }
+
                     }
                     audioTrack.write(samples, 0, bufferSize);
                 }
@@ -568,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
         PendingIntent openMainPendingIntent = PendingIntent.getActivity(this, 0, openMainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, PRIMARY_NOTIF_CHANNEL)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(getString(R.string.app_name))
@@ -577,6 +602,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setCategory(CATEGORY_SERVICE);
+
         Notification notification = mBuilder.build();
 
         // Hide small icon in Lollipop and Marshmallow notification pull down list as it looks shit
@@ -590,13 +616,11 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
         }
 
         // Issue notification
-        NotificationManager mNotifyMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         if (mNotifyMgr != null)
             mNotifyMgr.notify(0, notification);
     }
 
     private void cancelNotification(){
-        NotificationManager mNotifyMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         if (mNotifyMgr != null)
             mNotifyMgr.cancel(0);
     }
@@ -663,6 +687,11 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
                 return true;
             case R.id.menu_purchase:
                 upgrade();
+                return true;
+            case R.id.menu_privacy_policy:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://sites.google.com/view/twincapps-privacypolicy/home"));
+                startActivity(browserIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

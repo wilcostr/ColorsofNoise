@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_timer"
         android:icon="@drawable/ic_alarm_white_24dp"
-        android:orderInCategory="100"
+        android:orderInCategory="10"
         android:title="@string/timer"
         app:showAsAction="ifRoom" />
 
@@ -31,7 +31,12 @@
 
     <item
         android:id="@+id/menu_purchase"
-        android:orderInCategory="105"
+        android:orderInCategory="115"
         android:title="@string/upgrade" />
+
+    <item
+        android:id="@+id/menu_privacy_policy"
+        android:orderInCategory="105"
+        android:title="@string/privacy_policy"/>
 
 </menu>

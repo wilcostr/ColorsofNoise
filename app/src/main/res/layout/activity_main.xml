@@ -30,13 +30,12 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/headphones_red"/>
+                android:src="@drawable/red"/>
 
             <TextView
                 android:id="@+id/textView"
                 android:text="@string/red_txt"
                 android:textSize="18sp"
-                android:paddingTop="8dp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/spectrum_imageView"
                 android:layout_width="wrap_content"

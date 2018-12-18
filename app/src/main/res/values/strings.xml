@@ -8,6 +8,7 @@
     <string name="share">Share</string>
     <string name="timer">Timer</string>
     <string name="spectrum">Spectrum</string>
+    <string name="privacy_policy">Privacy policy</string>
 
     <string name="timer_title">Auto-shutdown timer</string>
     <string name="timer_msg">All playback will be automatically stopped when the timer runs out.
