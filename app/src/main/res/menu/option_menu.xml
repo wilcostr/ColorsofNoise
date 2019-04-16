@@ -5,8 +5,15 @@
     <item
         android:id="@+id/action_timer"
         android:icon="@drawable/ic_alarm_white_24dp"
-        android:orderInCategory="10"
+        android:orderInCategory="11"
         android:title="@string/timer"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_dark"
+        android:icon="@drawable/ic_wb_sunny_white_24dp"
+        android:orderInCategory="12"
+        android:title="@string/dark_mode"
         app:showAsAction="ifRoom" />
 
     <item

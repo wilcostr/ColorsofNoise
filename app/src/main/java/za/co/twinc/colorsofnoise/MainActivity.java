@@ -93,6 +93,13 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Create main share preference log
+        final SharedPreferences main_log = getSharedPreferences(MAIN_PREFS, 0);
+        if (main_log.getBoolean("dark", false))
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -111,9 +118,6 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
 
         // Set up the rectangle (banner) adView
         adView = findViewById(R.id.adView);
-
-        // Create main share preference log
-        final SharedPreferences main_log = getSharedPreferences(MAIN_PREFS, 0);
 
         // Create notification channel. No problem if already created previously
         mNotifyMgr = (NotificationManager)getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
@@ -544,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
                             samples[i] = (short) (newWhite*0.75);
                         if (abs(samples[i]) > amplitude) {
                             samples[i] = (short) (amplitude * signum(samples[i]));
-                            System.out.println(samples[i] + " is bigger than " + amplitude);
+                            //System.out.println(samples[i] + " is bigger than " + amplitude);
                         }
 
                     }
@@ -685,6 +689,9 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
             case R.id.action_timer:
                 menuTimerPressed();
                 return true;
+            case R.id.action_dark:
+                menuDarkPressed();
+                return true;
             case R.id.menu_purchase:
                 upgrade();
                 return true;
@@ -774,6 +781,17 @@ public class MainActivity extends AppCompatActivity implements BillingProvider{
             });
             builder.create().show();
         }
+    }
+
+    private void menuDarkPressed(){
+        SharedPreferences main_log = getSharedPreferences(MAIN_PREFS, 0);
+        SharedPreferences.Editor editor = main_log.edit();
+
+        // Flip the value of "dark"
+        editor.putBoolean("dark", !main_log.getBoolean("dark", false));
+        editor.apply();
+
+        this.recreate();
     }
 
     private void setTimer(){

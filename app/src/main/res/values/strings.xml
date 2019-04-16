@@ -88,5 +88,6 @@
     <string name="error_billing_default">Billing unavailable. Please check your device.</string>
 
     <string name="content_description_app_loading_image">App loading image</string>
+    <string name="dark_mode">Dark mode</string>
 
 </resources>
